@@ -1,0 +1,59 @@
+plugins {
+	id 'org.springframework.boot' version '2.4.5'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'idea'
+}
+
+// Use LTS version
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(15)
+        vendor = JvmVendorSpec.ADOPTOPENJDK
+    }
+}
+
+// GitHub-Version >> Docker Version >> Fallback
+if (System.getenv("RELEASE_VERSION")) {
+	version = System.getenv("RELEASE_VERSION")
+}
+else if (project.hasProperty("RELEASE_VERSION") && project.getProperty("RELEASE_VERSION") && !project.getProperty("RELEASE_VERSION").allWhitespace) {
+	version = project.getProperty("RELEASE_VERSION")
+}
+else {
+	version = "SNAPSHOT"
+}
+println("Building version $version")
+
+// Omit version number in artifacts for simpler releases
+bootJar.archiveFileName = "heizung-monitoring.jar"
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'
+
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+springBoot {
+	buildInfo()
+}
+
+// Adapt docker-compose.yml with correct version
+task adaptDockerCompose(type: Copy) {
+	from "$buildDir/../deploy/docker-compose.yml"
+	into "$buildDir/dist"
+	filter { line -> line.replaceAll('latest', version) }
+}
+
+build.dependsOn(adaptDockerCompose)

@@ -1,0 +1,76 @@
+package com.odin568.configuration;
+
+import com.google.common.util.concurrent.AtomicDouble;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+@Component
+public class Scheduler {
+
+    private final AtomicDouble valueHeater;
+    private final AtomicDouble valueOutside;
+
+    @Value("${homematic.url}")
+    private String homematicUrl;
+
+    @Value("${heater.datapoint}")
+    private int heaterDeviceId;
+
+    @Value("${outside.datapoint}")
+    private int outsideDeviceId;
+
+    @Autowired
+    public Scheduler(MeterRegistry meterRegistry) {
+        valueHeater = new AtomicDouble(0.0);
+        Gauge
+            .builder("heater.degree", valueHeater, AtomicDouble::doubleValue)
+            .register(meterRegistry);
+
+        valueOutside = new AtomicDouble(0.0);
+        Gauge
+                .builder("outside.degree", valueOutside, AtomicDouble::doubleValue)
+                .register(meterRegistry);
+    }
+
+    @Scheduled(fixedRateString = "10000", initialDelayString = "0")
+    public void setValueHeizung() {
+        Double value = getTemperatureForDevice(heaterDeviceId);
+        if (value != null)
+            valueHeater.set(value);
+    }
+
+    @Scheduled(fixedRateString = "10000", initialDelayString = "1000")
+    public void setValueOutside() {
+        Double value = getTemperatureForDevice(outsideDeviceId);
+        if (value != null)
+            valueOutside.set(value);
+    }
+
+    private Double getTemperatureForDevice(int deviceId) {
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            String result = restTemplate.getForObject(buildDataPointUrl(deviceId), String.class);
+            result = result.substring(result.indexOf("value='") + 7);
+            result = result.substring(0, result.indexOf("'"));
+            return Double.parseDouble(result);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+
+    }
+
+    private String buildDataPointUrl(int deviceId) {
+        String url = homematicUrl;
+        if (!url.endsWith("/"))
+            url += "/";
+        url += "addons/xmlapi/state.cgi?datapoint_id=" + deviceId;
+        return url;
+    }
+}
