@@ -39,3 +39,4 @@ out/
 ### Prevent from check-in!!! ###
 *.jar
 /ffw/
+**/data
