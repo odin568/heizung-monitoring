@@ -24,6 +24,9 @@ public class Scheduler {
     @Value("${outside.datapoint}")
     private int outsideDeviceId;
 
+    @Value("${debugHomematic:false}")
+    private boolean debug;
+
     @Autowired
     public Scheduler(MeterRegistry meterRegistry) {
         valueHeater = new AtomicDouble(0.0);
@@ -54,10 +57,20 @@ public class Scheduler {
     private Double getTemperatureForDevice(int deviceId) {
         try {
             RestTemplate restTemplate = new RestTemplate();
-            String result = restTemplate.getForObject(buildDataPointUrl(deviceId), String.class);
+            String url = buildDataPointUrl(deviceId);
+            String result = restTemplate.getForObject(url, String.class);
+
+            if (debug)
+                System.out.println("Response for " + url + " = " + result);
+
             result = result.substring(result.indexOf("value='") + 7);
             result = result.substring(0, result.indexOf("'"));
-            return Double.parseDouble(result);
+
+            Double dbl = Double.parseDouble(result);
+            if (debug)
+                System.out.println("Parsed value for " + deviceId + ": " + dbl);
+
+            return dbl;
         }
         catch (Exception e) {
             System.out.println(e);
