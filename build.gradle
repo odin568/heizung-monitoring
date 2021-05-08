@@ -49,11 +49,34 @@ springBoot {
 	buildInfo()
 }
 
+
+task packageDistribution(type: Zip) {
+	archiveFileName = "heizung-monitoring.zip"
+	destinationDirectory = file("$buildDir/release")
+	from "$buildDir/dist"
+}
+
 // Adapt docker-compose.yml with correct version
 task adaptDockerCompose(type: Copy) {
 	from "$buildDir/../deploy/docker-compose.yml"
 	into "$buildDir/dist"
 	filter { line -> line.replaceAll('latest', version) }
 }
+task copyArtifacts {
+	mkdir "$buildDir/dist/grafana"
+	copy {
+		from "$buildDir/../deploy/nginx"
+		into "$buildDir/dist/nginx"
+	}
 
+	copy {
+		from "$buildDir/../deploy/prometheus/prometheus.yml"
+		into "$buildDir/dist/prometheus/"
+	}
+	finalizedBy(packageDistribution)
+}
+
+
+
+build.dependsOn(copyArtifacts)
 build.dependsOn(adaptDockerCompose)
