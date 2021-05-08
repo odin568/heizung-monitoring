@@ -40,18 +40,15 @@ public class Scheduler {
                 .register(meterRegistry);
     }
 
-    @Scheduled(fixedRateString = "10000", initialDelayString = "0")
-    public void setValueHeizung() {
-        Double value = getTemperatureForDevice(heaterDeviceId);
-        if (value != null)
-            valueHeater.set(value);
-    }
+    @Scheduled(cron = "*/10 * * * * *")
+    public void setValues() {
+        Double outside = getTemperatureForDevice(outsideDeviceId);
+        if (outside != null)
+            valueOutside.set(outside);
 
-    @Scheduled(fixedRateString = "10000", initialDelayString = "1000")
-    public void setValueOutside() {
-        Double value = getTemperatureForDevice(outsideDeviceId);
-        if (value != null)
-            valueOutside.set(value);
+        Double heater = getTemperatureForDevice(heaterDeviceId);
+        if (heater != null)
+            valueHeater.set(heater);
     }
 
     private Double getTemperatureForDevice(int deviceId) {
