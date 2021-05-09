@@ -17,9 +17,6 @@ public class Prometheus {
     @Value("${outside.datapoint}")
     private int outsideDeviceId;
 
-    @Value("${debugHomematic:false}")
-    private boolean debug;
-
     /*
 # HELP outside_degree
 # TYPE outside_degree gauge
@@ -56,20 +53,13 @@ heater_degree 26.9
             String url = buildDataPointUrl(deviceId);
             String result = restTemplate.getForObject(url, String.class);
 
-            if (debug)
-                System.out.println("Response for " + url + " = " + result);
-
             result = result.substring(result.indexOf("value='") + 7);
             result = result.substring(0, result.indexOf("'"));
 
-            Double dbl = Double.parseDouble(result);
-            if (debug)
-                System.out.println("Parsed value for " + deviceId + ": " + dbl);
-
-            return dbl;
+            return Double.parseDouble(result);
         }
         catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
             return null;
         }
 
