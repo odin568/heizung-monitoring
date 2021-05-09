@@ -1,19 +1,12 @@
-package com.odin568.configuration;
+package com.odin568.api;
 
-import com.google.common.util.concurrent.AtomicDouble;
-import io.micrometer.core.instrument.Gauge;
-import io.micrometer.core.instrument.MeterRegistry;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-@Component
-public class Scheduler {
-
-    private final AtomicDouble valueHeater;
-    private final AtomicDouble valueOutside;
+@RestController
+public class Prometheus {
 
     @Value("${homematic.url}")
     private String homematicUrl;
@@ -27,29 +20,34 @@ public class Scheduler {
     @Value("${debugHomematic:false}")
     private boolean debug;
 
-    @Autowired
-    public Scheduler(MeterRegistry meterRegistry) {
-        valueHeater = new AtomicDouble(0.0);
-        Gauge
-            .builder("heater.degree", valueHeater, AtomicDouble::doubleValue)
-            .register(meterRegistry);
-
-        valueOutside = new AtomicDouble(0.0);
-        Gauge
-                .builder("outside.degree", valueOutside, AtomicDouble::doubleValue)
-                .register(meterRegistry);
-    }
-
-    // Disabled. Problem with scheduling on Raspi3
-    //@Scheduled(cron = "*/10 * * * * *")
-    public void setValues() {
+    /*
+# HELP outside_degree
+# TYPE outside_degree gauge
+outside_degree 24.6
+# HELP heater_degree
+# TYPE heater_degree gauge
+heater_degree 26.9
+ */
+    @GetMapping(value = "/api/prometheus", produces = "text/plain")
+    public String prometheus()
+    {
+        String result = "";
         Double outside = getTemperatureForDevice(outsideDeviceId);
-        if (outside != null)
-            valueOutside.set(outside);
-
         Double heater = getTemperatureForDevice(heaterDeviceId);
-        if (heater != null)
-            valueHeater.set(heater);
+
+        if (outside != null) {
+            result += "# HELP outside_degree" + System.lineSeparator();
+            result += "# TYPE outside_degree gauge" + System.lineSeparator();
+            result += "outside_degree " + String.format("%.1f", outside) + System.lineSeparator();
+        }
+
+        if (heater != null) {
+            result += "# HELP heater_degree" + System.lineSeparator();
+            result += "# TYPE heater_degree gauge" + System.lineSeparator();
+            result += "heater_degree " + String.format("%.1f", heater) + System.lineSeparator();
+        }
+
+        return result.trim();
     }
 
     private Double getTemperatureForDevice(int deviceId) {
