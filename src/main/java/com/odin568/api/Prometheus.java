@@ -17,6 +17,9 @@ public class Prometheus {
     @Value("${outside.datapoint}")
     private int outsideDeviceId;
 
+    @Value("${water.datapoint}")
+    private int waterDeviceId;
+
     /*
 # HELP outside_degree
 # TYPE outside_degree gauge
@@ -24,6 +27,9 @@ outside_degree 24.6
 # HELP heater_degree
 # TYPE heater_degree gauge
 heater_degree 26.9
+# HELP water_degree
+# TYPE water_degree gauge
+water_degree 36.9
  */
     @GetMapping(value = "/api/prometheus", produces = "text/plain")
     public String prometheus()
@@ -31,6 +37,7 @@ heater_degree 26.9
         String result = "";
         Double outside = getTemperatureForDevice(outsideDeviceId);
         Double heater = getTemperatureForDevice(heaterDeviceId);
+        Double water = getTemperatureForDevice(waterDeviceId);
 
         if (outside != null) {
             result += "# HELP outside_degree" + System.lineSeparator();
@@ -42,6 +49,12 @@ heater_degree 26.9
             result += "# HELP heater_degree" + System.lineSeparator();
             result += "# TYPE heater_degree gauge" + System.lineSeparator();
             result += "heater_degree " + String.format("%.1f", heater) + System.lineSeparator();
+        }
+
+        if (water != null) {
+            result += "# HELP water_degree" + System.lineSeparator();
+            result += "# TYPE water_degree gauge" + System.lineSeparator();
+            result += "water_degree " + String.format("%.1f", water) + System.lineSeparator();
         }
 
         return result.trim();
