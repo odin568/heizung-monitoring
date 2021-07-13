@@ -13,6 +13,10 @@ java {
     }
 }
 
+jar {
+	enabled = false
+}
+
 // GitHub-Version >> Docker Version >> Fallback
 if (System.getenv("RELEASE_VERSION")) {
 	version = System.getenv("RELEASE_VERSION")
@@ -24,9 +28,6 @@ else {
 	version = "SNAPSHOT"
 }
 println("Building version $version")
-
-// Omit version number in artifacts for simpler releases
-bootJar.archiveFileName = "heizung-monitoring.jar"
 
 repositories {
 	mavenCentral()
