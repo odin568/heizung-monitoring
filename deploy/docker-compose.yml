@@ -9,7 +9,7 @@ services:
     restart: always
   prometheus:
     # use correct image for arch
-    image: prom/prometheus-linux-armv7:v2.31.1
+    image: prom/prometheus-linux-armv7:v2.36.2
     container_name: prometheus
     depends_on:
       - heizung-monitoring
@@ -22,7 +22,7 @@ services:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./prometheus/data:/prometheus
   grafana:
-    image: grafana/grafana:8.3.2
+    image: grafana/grafana:9.0.1
     container_name: grafana
     depends_on:
       - prometheus
@@ -37,7 +37,7 @@ services:
       - ./grafana/data:/var/lib/grafana
   nginx:
   #https://community.grafana.com/t/how-to-make-one-live-dashboard-public/12819
-    image: nginx:1.21.4
+    image: nginx:1.23.0
     container_name: nginx
     depends_on:
       - grafana
