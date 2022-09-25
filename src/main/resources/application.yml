@@ -5,6 +5,8 @@ homematic:
   url: 'http://192.168.0.200'
 heater:
   datapoint: '18092'
+circuit:
+  datapoint: '18251'
 outside:
   datapoint: '12647'
 water:

@@ -14,6 +14,9 @@ public class Prometheus {
     @Value("${heater.datapoint}")
     private int heaterDeviceId;
 
+    @Value("${circuit.datapoint}")
+    private int circuitDeviceId;
+
     @Value("${outside.datapoint}")
     private int outsideDeviceId;
 
@@ -27,6 +30,9 @@ outside_degree 24.6
 # HELP heater_degree
 # TYPE heater_degree gauge
 heater_degree 26.9
+# HELP circuit_degree
+# TYPE circuit_degree gauge
+circuit_degree 28.9
 # HELP water_degree
 # TYPE water_degree gauge
 water_degree 36.9
@@ -37,6 +43,7 @@ water_degree 36.9
         String result = "";
         Double outside = getTemperatureForDevice(outsideDeviceId);
         Double heater = getTemperatureForDevice(heaterDeviceId);
+        Double circuit = getTemperatureForDevice(circuitDeviceId);
         Double water = getTemperatureForDevice(waterDeviceId);
 
         if (outside != null) {
@@ -49,6 +56,12 @@ water_degree 36.9
             result += "# HELP heater_degree" + System.lineSeparator();
             result += "# TYPE heater_degree gauge" + System.lineSeparator();
             result += "heater_degree " + String.format("%.1f", heater) + System.lineSeparator();
+        }
+
+        if (circuit != null) {
+            result += "# HELP circuit_degree" + System.lineSeparator();
+            result += "# TYPE circuit_degree gauge" + System.lineSeparator();
+            result += "circuit_degree " + String.format("%.1f", circuit) + System.lineSeparator();
         }
 
         if (water != null) {
