@@ -1,10 +1,10 @@
-FROM eclipse-temurin:17-jdk AS builder
+FROM eclipse-temurin:20-jdk AS builder
 WORKDIR application
 COPY build/libs/*.jar application.jar
 RUN java -Djarmode=layertools -jar application.jar extract
 
 
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:20-jre
 LABEL maintainer="odin568"
 EXPOSE 8080
 ENV TZ=Europe/Berlin
