@@ -5,11 +5,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 @RestController
 public class Prometheus {
 
     @Value("${homematic.url}")
     private String homematicUrl;
+
+    @Value("${homematic.sid}")
+    private String homematicSid;
 
     @Value("${heater.datapoint}")
     private int heaterDeviceId;
@@ -95,7 +101,7 @@ water_degree 36.9
         String url = homematicUrl;
         if (!url.endsWith("/"))
             url += "/";
-        url += "addons/xmlapi/state.cgi?datapoint_id=" + deviceId;
+        url += "addons/xmlapi/state.cgi?datapoint_id=" + deviceId + "&sid=" + URLEncoder.encode(homematicSid, StandardCharsets.UTF_8);
         return url;
     }
 }
