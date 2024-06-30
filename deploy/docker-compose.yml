@@ -37,7 +37,7 @@ services:
       - ./grafana/data:/var/lib/grafana
   nginx:
   #https://community.grafana.com/t/how-to-make-one-live-dashboard-public/12819
-    image: nginx:1.25.3
+    image: nginx:1.25.5
     container_name: nginx
     depends_on:
       - grafana
