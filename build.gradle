@@ -7,7 +7,7 @@ plugins {
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
 
@@ -47,26 +47,26 @@ springBoot {
 
 task packageDistribution(type: Zip) {
 	archiveFileName = "heizung-monitoring.zip"
-	destinationDirectory = file("$buildDir/release")
-	from "$buildDir/dist"
+	destinationDirectory = file("$layout.buildDirectory/release")
+	from "$layout.buildDirectory/dist"
 }
 
 // Adapt docker-compose.yml with correct version
 task adaptDockerCompose(type: Copy) {
-	from "$buildDir/../deploy/docker-compose.yml"
-	into "$buildDir/dist"
+	from "$layout.buildDirectory/../deploy/docker-compose.yml"
+	into "$layout.buildDirectory/dist"
 	filter { line -> line.replaceAll('latest', version) }
 }
 task copyArtifacts {
-	mkdir "$buildDir/dist/grafana"
+	mkdir "$layout.buildDirectory/dist/grafana"
 	copy {
-		from "$buildDir/../deploy/nginx"
-		into "$buildDir/dist/nginx"
+		from "$layout.buildDirectory/../deploy/nginx"
+		into "$layout.buildDirectory/dist/nginx"
 	}
 
 	copy {
-		from "$buildDir/../deploy/prometheus/prometheus.yml"
-		into "$buildDir/dist/prometheus/"
+		from "$layout.buildDirectory/../deploy/prometheus/prometheus.yml"
+		into "$layout.buildDirectory/dist/prometheus/"
 	}
 }
 
