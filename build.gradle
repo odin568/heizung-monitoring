@@ -45,29 +45,33 @@ springBoot {
 }
 
 
-task packageDistribution(type: Zip) {
-	archiveFileName = "heizung-monitoring.zip"
-	destinationDirectory = file("$layout.buildDirectory/release")
-	from "$layout.buildDirectory/dist"
+tasks.register('packageDistribution', Zip) {
+    archiveFileName = "heizung-monitoring.zip"
+    destinationDirectory = layout.buildDirectory.dir("release")
+    from(layout.buildDirectory.dir("dist"))
 }
 
 // Adapt docker-compose.yml with correct version
-task adaptDockerCompose(type: Copy) {
-	from "$layout.buildDirectory/../deploy/docker-compose.yml"
-	into "$layout.buildDirectory/dist"
-	filter { line -> line.replaceAll('latest', version) }
+tasks.register('adaptDockerCompose', Copy) {
+    from(layout.buildDirectory.dir("../deploy/docker-compose.yml"))
+    into(layout.buildDirectory.dir("dist"))
+    filter { line -> line.replaceAll('latest', version) }
 }
-task copyArtifacts {
-	mkdir "$layout.buildDirectory/dist/grafana"
-	copy {
-		from "$layout.buildDirectory/../deploy/nginx"
-		into "$layout.buildDirectory/dist/nginx"
-	}
 
-	copy {
-		from "$layout.buildDirectory/../deploy/prometheus/prometheus.yml"
-		into "$layout.buildDirectory/dist/prometheus/"
-	}
+tasks.register('copyArtifacts') {
+    doLast {
+        mkdir(layout.buildDirectory.dir("dist/grafana").get().asFile)
+
+        copy {
+            from(layout.buildDirectory.dir("../deploy/nginx"))
+            into(layout.buildDirectory.dir("dist/nginx"))
+        }
+
+        copy {
+            from(layout.buildDirectory.dir("../deploy/prometheus/prometheus.yml"))
+            into(layout.buildDirectory.dir("dist/prometheus"))
+        }
+    }
 }
 
 build {
