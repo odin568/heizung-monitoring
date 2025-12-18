@@ -26,7 +26,6 @@
   "graphTooltip": 0,
   "id": 1,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -44,7 +43,7 @@
             "steps": [
               {
                 "color": "dark-red",
-                "value": null
+                "value": 0
               },
               {
                 "color": "semi-dark-red",
@@ -75,7 +74,8 @@
                 "value": 60
               }
             ]
-          }
+          },
+          "unit": "celsius"
         },
         "overrides": []
       },
@@ -104,7 +104,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.1.1",
+      "pluginVersion": "12.1.4",
       "targets": [
         {
           "datasource": {
@@ -137,190 +137,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-blue",
-                "value": null
-              },
-              {
-                "color": "semi-dark-blue",
-                "value": -10
-              },
-              {
-                "color": "light-blue",
+                "color": "dark-red",
                 "value": 0
-              },
-              {
-                "color": "super-light-orange",
-                "value": 10
-              },
-              {
-                "color": "light-orange",
-                "value": 15
-              },
-              {
-                "color": "semi-dark-orange",
-                "value": 20
-              },
-              {
-                "color": "dark-orange",
-                "value": 25
-              },
-              {
-                "color": "semi-dark-red",
-                "value": 30
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 3,
-        "x": 3,
-        "y": 0
-      },
-      "id": 8,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {},
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.1.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "-jAacDkRz"
-          },
-          "exemplar": true,
-          "expr": "outside_degree{}",
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Außentemperatur",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "-jAacDkRz"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-red",
-                "value": null
-              },
-              {
-                "color": "semi-dark-red",
-                "value": 30
-              },
-              {
-                "color": "light-red",
-                "value": 40
-              },
-              {
-                "color": "dark-orange",
-                "value": 45
-              },
-              {
-                "color": "light-green",
-                "value": 50
-              },
-              {
-                "color": "semi-dark-green",
-                "value": 55
-              },
-              {
-                "color": "dark-green",
-                "value": 60
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 3,
-        "x": 6,
-        "y": 0
-      },
-      "id": 6,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {},
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.1.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "-jAacDkRz"
-          },
-          "exemplar": true,
-          "expr": "water_degree{}",
-          "interval": "",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Warmwasser",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "-jAacDkRz"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-red",
-                "value": null
               },
               {
                 "color": "semi-dark-red",
@@ -351,17 +169,18 @@
                 "value": 60
               }
             ]
-          }
+          },
+          "unit": "celsius"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 3,
         "w": 3,
-        "x": 9,
+        "x": 3,
         "y": 0
       },
-      "id": 9,
+      "id": 10,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -380,7 +199,171 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.1.1",
+      "pluginVersion": "12.1.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "-jAacDkRz"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "heater_return_degree{}",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Rücklauftemperatur",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "-jAacDkRz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "litreh"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 6,
+        "y": 0
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.1.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "-jAacDkRz"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "heater_volume{}",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Volumenstrom",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "-jAacDkRz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-blue",
+                "value": 0
+              },
+              {
+                "color": "semi-dark-blue",
+                "value": -10
+              },
+              {
+                "color": "light-blue",
+                "value": 0
+              },
+              {
+                "color": "super-light-orange",
+                "value": 10
+              },
+              {
+                "color": "light-orange",
+                "value": 15
+              },
+              {
+                "color": "semi-dark-orange",
+                "value": 20
+              },
+              {
+                "color": "dark-orange",
+                "value": 25
+              },
+              {
+                "color": "semi-dark-red",
+                "value": 30
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 9,
+        "y": 0
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.1.4",
       "targets": [
         {
           "datasource": {
@@ -388,14 +371,13 @@
             "uid": "-jAacDkRz"
           },
           "exemplar": true,
-          "expr": "circuit_degree{}",
-          "instant": false,
+          "expr": "outside_degree{}",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
         }
       ],
-      "title": "Heizkreis",
+      "title": "Außentemperatur",
       "type": "stat"
     },
     {
@@ -415,6 +397,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -449,7 +432,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -459,7 +442,35 @@
           },
           "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Vorlauftemperatur",
+                  "Außentemperatur",
+                  "Warmwasser",
+                  "Heizkreis"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -476,11 +487,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "9.0.9",
+      "pluginVersion": "12.1.4",
       "targets": [
         {
           "datasource": {
@@ -536,13 +548,218 @@
           "legendFormat": "Heizkreis",
           "range": true,
           "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "-jAacDkRz"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "heater_return_degree",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "Rücklauftemperatur",
+          "range": true,
+          "refId": "E",
+          "useBackend": false
         }
       ],
       "title": "Temperaturverlauf",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "-jAacDkRz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "semi-dark-red",
+                "value": 30
+              },
+              {
+                "color": "light-red",
+                "value": 40
+              },
+              {
+                "color": "dark-orange",
+                "value": 45
+              },
+              {
+                "color": "light-green",
+                "value": 50
+              },
+              {
+                "color": "semi-dark-green",
+                "value": 55
+              },
+              {
+                "color": "dark-green",
+                "value": 60
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 0,
+        "y": 12
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.1.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "-jAacDkRz"
+          },
+          "exemplar": true,
+          "expr": "water_degree{}",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Warmwasser",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "-jAacDkRz"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "semi-dark-red",
+                "value": 25
+              },
+              {
+                "color": "light-red",
+                "value": 30
+              },
+              {
+                "color": "super-light-red",
+                "value": 35
+              },
+              {
+                "color": "dark-orange",
+                "value": 40
+              },
+              {
+                "color": "light-green",
+                "value": 50
+              },
+              {
+                "color": "semi-dark-green",
+                "value": 55
+              },
+              {
+                "color": "dark-green",
+                "value": 60
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 3,
+        "y": 12
+      },
+      "id": 9,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.1.4",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "-jAacDkRz"
+          },
+          "exemplar": true,
+          "expr": "circuit_degree{}",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Heizkreis Vorlauf",
+      "type": "stat"
     }
   ],
-  "schemaVersion": 39,
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 41,
   "tags": [],
   "templating": {
     "list": []
@@ -555,6 +772,6 @@
   "timezone": "Europe/Berlin",
   "title": "Heizung",
   "uid": "UCSPcvkgz",
-  "version": 6,
+  "version": 7,
   "weekStart": "monday"
 }
