@@ -6,6 +6,7 @@ homematic:
 heater:
   flowId: '19208'
   returnId: '19209'
+  volumeId: '19212'
 circuit:
   datapoint: '18251'
 outside:

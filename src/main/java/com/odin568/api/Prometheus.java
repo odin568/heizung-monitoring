@@ -23,6 +23,9 @@ public class Prometheus {
     @Value("${heater.returnId}")
     private int heaterReturnId;
 
+    @Value("${heater.volumeId}")
+    private int heaterVolumeId;
+
     @Value("${circuit.datapoint}")
     private int circuitDeviceId;
 
@@ -35,27 +38,32 @@ public class Prometheus {
     /*
 # HELP outside_degree
 # TYPE outside_degree gauge
-outside_degree 4,5
+outside_degree 4,3
 # HELP heater_degree
 # TYPE heater_degree gauge
-heater_degree 56,5
+heater_degree 58,8
 # HELP heater_return_degree
 # TYPE heater_return_degree gauge
-heater_return_degree 51,8
+heater_return_degree 53,5
+# HELP heater_volume
+# TYPE heater_volume gauge
+heater_volume 1389,0
 # HELP circuit_degree
 # TYPE circuit_degree gauge
-circuit_degree 51,9
+circuit_degree 55,4
 # HELP water_degree
 # TYPE water_degree gauge
-water_degree 53,0
+water_degree 52,9
  */
     @GetMapping(value = "/api/prometheus", produces = "text/plain")
     public String prometheus()
     {
         String result = "";
         Double outside = getDeviceValue(outsideDeviceId);
+
         Double heaterFlow = getSysVarValue(heaterFlowId);
         Double heaterReturn = getSysVarValue(heaterReturnId);
+        Double heaterVolume = getSysVarValue(heaterVolumeId);
 
         Double circuit = getDeviceValue(circuitDeviceId);
         Double water = getDeviceValue(waterDeviceId);
@@ -76,6 +84,12 @@ water_degree 53,0
             result += "# HELP heater_return_degree" + System.lineSeparator();
             result += "# TYPE heater_return_degree gauge" + System.lineSeparator();
             result += "heater_return_degree " + String.format("%.1f", heaterReturn) + System.lineSeparator();
+        }
+
+        if (heaterVolume != null) {
+            result += "# HELP heater_volume" + System.lineSeparator();
+            result += "# TYPE heater_volume gauge" + System.lineSeparator();
+            result += "heater_volume " + String.format("%.1f", heaterVolume) + System.lineSeparator();
         }
 
         if (circuit != null) {
