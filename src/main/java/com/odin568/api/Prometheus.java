@@ -17,8 +17,11 @@ public class Prometheus {
     @Value("${homematic.sid}")
     private String homematicSid;
 
-    @Value("${heater.datapoint}")
-    private int heaterDeviceId;
+    @Value("${heater.flowId}")
+    private int heaterFlowId;
+
+    @Value("${heater.returnId}")
+    private int heaterReturnId;
 
     @Value("${circuit.datapoint}")
     private int circuitDeviceId;
@@ -32,25 +35,30 @@ public class Prometheus {
     /*
 # HELP outside_degree
 # TYPE outside_degree gauge
-outside_degree 24.6
+outside_degree 4,5
 # HELP heater_degree
 # TYPE heater_degree gauge
-heater_degree 26.9
+heater_degree 56,5
+# HELP heater_return_degree
+# TYPE heater_return_degree gauge
+heater_return_degree 51,8
 # HELP circuit_degree
 # TYPE circuit_degree gauge
-circuit_degree 28.9
+circuit_degree 51,9
 # HELP water_degree
 # TYPE water_degree gauge
-water_degree 36.9
+water_degree 53,0
  */
     @GetMapping(value = "/api/prometheus", produces = "text/plain")
     public String prometheus()
     {
         String result = "";
-        Double outside = getTemperatureForDevice(outsideDeviceId);
-        Double heater = getTemperatureForDevice(heaterDeviceId);
-        Double circuit = getTemperatureForDevice(circuitDeviceId);
-        Double water = getTemperatureForDevice(waterDeviceId);
+        Double outside = getDeviceValue(outsideDeviceId);
+        Double heaterFlow = getSysVarValue(heaterFlowId);
+        Double heaterReturn = getSysVarValue(heaterReturnId);
+
+        Double circuit = getDeviceValue(circuitDeviceId);
+        Double water = getDeviceValue(waterDeviceId);
 
         if (outside != null) {
             result += "# HELP outside_degree" + System.lineSeparator();
@@ -58,10 +66,16 @@ water_degree 36.9
             result += "outside_degree " + String.format("%.1f", outside) + System.lineSeparator();
         }
 
-        if (heater != null) {
+        if (heaterFlow != null) {
             result += "# HELP heater_degree" + System.lineSeparator();
             result += "# TYPE heater_degree gauge" + System.lineSeparator();
-            result += "heater_degree " + String.format("%.1f", heater) + System.lineSeparator();
+            result += "heater_degree " + String.format("%.1f", heaterFlow) + System.lineSeparator();
+        }
+
+        if (heaterReturn != null) {
+            result += "# HELP heater_return_degree" + System.lineSeparator();
+            result += "# TYPE heater_return_degree gauge" + System.lineSeparator();
+            result += "heater_return_degree " + String.format("%.1f", heaterReturn) + System.lineSeparator();
         }
 
         if (circuit != null) {
@@ -79,7 +93,7 @@ water_degree 36.9
         return result.trim();
     }
 
-    private Double getTemperatureForDevice(int deviceId) {
+    private Double getDeviceValue(int deviceId) {
         try {
             RestTemplate restTemplate = new RestTemplate();
             String url = buildDataPointUrl(deviceId);
@@ -94,7 +108,23 @@ water_degree 36.9
             System.out.println(e.getMessage());
             return null;
         }
+    }
 
+    private Double getSysVarValue(int iseId) {
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            String url = buildSysVarUrl(iseId);
+            String result = restTemplate.getForObject(url, String.class);
+
+            result = result.substring(result.indexOf("value='") + 7);
+            result = result.substring(0, result.indexOf("'"));
+
+            return Double.parseDouble(result);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     private String buildDataPointUrl(int deviceId) {
@@ -102,6 +132,14 @@ water_degree 36.9
         if (!url.endsWith("/"))
             url += "/";
         url += "addons/xmlapi/state.cgi?datapoint_id=" + deviceId + "&sid=" + URLEncoder.encode(homematicSid, StandardCharsets.UTF_8);
+        return url;
+    }
+
+    private String buildSysVarUrl(int iseId) {
+        String url = homematicUrl;
+        if (!url.endsWith("/"))
+            url += "/";
+        url += "addons/xmlapi/sysvar.cgi?ise_id=" + iseId + "&sid=" + URLEncoder.encode(homematicSid, StandardCharsets.UTF_8);
         return url;
     }
 }

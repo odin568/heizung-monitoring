@@ -4,7 +4,8 @@ spring:
 homematic:
   url: 'http://192.168.0.200'
 heater:
-  datapoint: '18092'
+  flowId: '19208'
+  returnId: '19209'
 circuit:
   datapoint: '18251'
 outside:
