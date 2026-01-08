@@ -32,6 +32,7 @@ services:
     environment:
       - GF_AUTH_PROXY_AUTO_SIGN_UP=false
       - GF_AUTH_PROXY_ENABLED=true
+      - GF_LIVE_MAX_CONNECTIONS=0
       - TZ=Europe/Berlin
     volumes:
       - ./grafana/data:/var/lib/grafana
