@@ -2,7 +2,7 @@ spring:
   main:
     banner-mode: 'off'
 homematic:
-  url: 'http://192.168.0.200'
+  url: 'http://192.168.0.21'
 heater:
   flowId: '19208'
   returnId: '19209'
