@@ -1,5 +1,7 @@
 # Heizung Monitoring
 
+> Replaced by HomeAssistant -> InfluxDb -> Grafana in 2026
+
 Purpose is to monitor my heater engine as well as the outside temperature.  
 As I am plugged to a local heating network with partial problems, I want to easily visualize also from remote what the state of the heater temperature is.  
 
